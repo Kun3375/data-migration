@@ -1,0 +1,48 @@
+datasource:
+  first:
+    driver-class: com.mysql.jdbc.Driver
+    user: kun
+    password: 1922
+    jdbc-url: "jdbc:mysql:///db_dev?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&useSSL=true"
+  second:
+    driver-class: com.mysql.jdbc.Driver
+    user: kun
+    password: 1922
+    jdbc-url: "jdbc:mysql:///db_sec_dev?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&useSSL=true"
+
+
+data:
+  query-sql: "select * from t_pay_auth ORDER BY f_id limit ?, ?"
+  upsert-sql: "insert into t_pay_auth_temp (f_auth_organ, f_token, f_merchant_no, f_acc_name, f_id_type, f_id_no,
+  f_mobile, f_card_no, f_remark, f_status, f_state) values "
+  aes-key: "87pdcvlawfw0-9"
+  relationships:
+    - from: "f_auth_"
+      to: "f_auth"
+      style: NORMAL
+    - from: "f_token_id"
+      to: "f_token_id"
+      style: NORMAL
+    - from: "f_merchant"
+      to: "f_merchant"
+      style: NORMAL
+    - from: "f_name"
+      to: "f_name"
+      style: AES_DEC
+    - from: "f_mobile"
+      to: "f_mobile"
+      style: NORMAL
+    - from: "f_remark"
+      to: "f_remark"
+      style: NORMAL
+    - from: "f_status"
+      to: "f_status"
+      style: NORMAL
+    - from: "f_state"
+      to: "f_state"
+      style: NORMAL
+
+server:
+  port: 7777
+
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <!-- 定义缺省日志样式 -->
+    <property name="LOG_PATTERN" value="%date{HH:mm:ss:SSS}  %msg%n"/>
+
+    <!-- 定义缺省日志路径 -->
+    <property name="LOG_FILE_PATH" value="/data/logs/data-migration/"/>
+
+    <!-- 定义一个appender将日志输出到标准输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 定义一个appender将日志输出到文件 -->
+    <appender name="FILE-APP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_FILE_PATH}/app.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <append>true</append>
+    </appender>
+
+    <!-- 定义一个appender输出访问日志 -->
+    <appender name="accessAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/access.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.kun.migration" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE-APP"/>
+    </logger>
+
+    <!-- root的level不能降低，否则会输出大量spring的debug日志 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE-APP"/>
+    </root>
+
+</configuration>

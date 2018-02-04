@@ -1,0 +1,47 @@
+datasource:
+  first:
+    driver-class: com.mysql.jdbc.Driver
+    user: kun
+    password: 3375
+    jdbc-url: "jdbc:mysql:///test?useSSL=false"
+  second:
+    driver-class: com.mysql.jdbc.Driver
+    user: kun
+    password: 3375
+    jdbc-url: "jdbc:mysql:///test2?useSSL=false"
+
+
+data:
+  # 查询语句，查询结果需要包含需要的数据内容，接收limit两个参数
+#  query-sql: "select * from t_user a left join t_ext b on a.id = b.id order by a.id limit ?, ?"
+  query-sql: "select * from t_user order by id limit ?, ?"
+  # 插入/更新语句
+  upsert-sql: "insert into t_user_bk (name, score, age) values "
+  # 关联查询语句（不跨库请使用单一查询语句完成操作！！！跨库时使用，会使用第二数据源）
+  rel-sql: "select name, goal from t_ext where name in "
+  # 关键词，querySQL/upsertSQL中需要存在该字段
+  rel-key: "name"
+  # 密钥
+  aes-key: "87pdcvlawfw0-9"
+  # 支持一对多的字段映射，不支持多对一的字段映射，to字段顺序与插入顺序必须一致！
+  relationships:
+      # 来源字段/别名
+    - from: "name"
+      # 目标字段
+      to: "name"
+      # 内容格式化方案，对应枚举与格式化流程需要自定义，已支持的有
+      # NORMAL：直接传输
+      # AES_ENC：AES加密
+      # AES_DEC：AES解密
+      style: AES_ENC
+    - from: "goal"
+      to: "score"
+      style: NORMAL
+    - from: "age"
+      to: "age"
+      style: NORMAL
+
+server:
+  port: 7777
+
+
